@@ -1,5 +1,6 @@
 # Digitalent Kominfo - Pengenalan Konsep MVC Golang
-
+This section facilitate formation competencies to be able to understand basic concepts Golang and the concept of using the MVC implementation.
+Golang.
 ## Development Tutorial
 
 ### 1. Install Gin Package
@@ -14,7 +15,7 @@ go get firebase.google.com/go
 
 [gin-repository]: <https://github.com/gin-gonic/gin>
 
-###2. Initialize Gin Router
+### 3. Initialize Gin Router
 Create the first route path using Gin using this code below.
 ```
 package main
