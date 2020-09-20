@@ -1,1 +1,1 @@
-# Digitalent-Kominfo_Pengenalan_Konsep_MVC_Golang
+# Digitalent Kominfo - Pengenalan Konsep MVC Golang
