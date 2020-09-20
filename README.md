@@ -7,10 +7,6 @@ To see the complete documentation of Gin, you can visit the Gin official [reposi
 ```
 go get github.com/gin-gonic/gin
 ```
-### 2. Install Firebase Admin SDK 
-```
-go get firebase.google.com/go
-```
 
 [gin-repository]: <https://github.com/gin-gonic/gin>
 
