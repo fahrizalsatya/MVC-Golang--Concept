@@ -9,6 +9,7 @@ import (
 	"google.golang.org/api/option"
 	"log"
 	"net/http"
+	"strings"
 )
 
 var client *db.Client
@@ -38,6 +39,8 @@ func main(){
 	router := gin.Default()
 	router.POST("/api/v1/antrian", AddAntrianHandler)
 	router.GET("/api/v1/antrian/status",GetAntrianHandler)
+	router.PUT("/api/v1/antrian/id/:idAntrian",UpdateAntrianHandler)
+	router.DELETE("/api/v1/antrian/id/:idAntrian/delete",DeleteAntrianHandler)
 	router.Run(":8080")
 }
 
@@ -57,13 +60,41 @@ func AddAntrianHandler(c *gin.Context){
 
 func GetAntrianHandler(c *gin.Context){
 
-	// As an admin, the app has access to read and write all data, regradless of Security Rules
-	//
 	flag,err,resp := getAntrian()
 	if flag {
 		c.JSON(http.StatusOK,map[string]interface{}{
 			"status":"success",
 			"data":resp,
+		})
+	}else {
+		c.JSON(http.StatusBadRequest,map[string]interface{}{
+			"status":"failed",
+			"error":err,
+		})
+	}
+}
+
+func UpdateAntrianHandler(c *gin.Context) {
+	idAntrian := c.Param("idAntrian")
+	flag,err := updateAntrian(idAntrian)
+	if flag {
+		c.JSON(http.StatusOK,map[string]interface{}{
+			"status":"success",
+		})
+	}else {
+		c.JSON(http.StatusBadRequest,map[string]interface{}{
+			"status":"failed",
+			"error":err,
+		})
+	}
+}
+
+func DeleteAntrianHandler(c *gin.Context){
+	idAntrian := c.Param("idAntrian")
+	flag,err := deleteAntrian(idAntrian)
+	if flag {
+		c.JSON(http.StatusOK,map[string]interface{}{
+			"status":"success",
 		})
 	}else {
 		c.JSON(http.StatusBadRequest,map[string]interface{}{
@@ -106,6 +137,35 @@ func getAntrian() (bool,error,[]map[string]interface{}){
 	}
 
 	return true,nil,data
+}
+
+func updateAntrian(idAntrian string) (bool,error){
+	ref := client.NewRef("antrian")
+	id := strings.Split(idAntrian, "-")
+	childRef := ref.Child(id[1])
+	antrian := Antrian{
+		Id: idAntrian,
+		Status: true,
+	}
+	if err := childRef.Set(ctx, antrian); err != nil {
+		log.Fatal(err)
+		return false,err
+	}
+
+	return true,nil
+}
+
+func deleteAntrian (idAntrian string) (bool,error){
+
+	ref := client.NewRef("antrian")
+	id := strings.Split(idAntrian, "-")
+	childRef := ref.Child(id[1])
+	if err := childRef.Delete(ctx); err != nil {
+		log.Fatal(err)
+		return false,err
+	}
+
+	return true,nil
 }
 
 type Antrian struct {
