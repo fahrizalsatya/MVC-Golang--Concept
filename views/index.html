@@ -51,7 +51,7 @@
     var antrianRef = firebase.database().ref('antrian');
     antrianRef.on('value', function(snapshot) {
       const antrian = snapshot.val()
-      const currentAntrian = antrian.find(item => item != null)
+      const currentAntrian = antrian.find(item => item != null && item.status === false)
 
       document.getElementById('txt-antrian').innerText = currentAntrian.id
     });
