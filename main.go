@@ -2,6 +2,7 @@ package main
 
 import (
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -17,21 +18,14 @@ var data []Antrian
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/db"
+=======
+	"github.com/FadhlanHawali/Digitalent-Kominfo_Introduction-MVC-Golang-Concept/app/controller"
+>>>>>>> 00cd39fc767441d4419619135cf00be50a8ea4f8
 	"github.com/gin-gonic/gin"
-	"google.golang.org/api/option"
 )
 
-var client *db.Client
-var ctx context.Context
 
-func init() {
-	ctx = context.Background()
-	conf := &firebase.Config{
-		DatabaseURL: "https://belajarfirebase-e1dd9.firebaseio.com/",
-	}
-	// Fetch the service account key JSON file contents
-	opt := option.WithCredentialsFile("firebase-admin-sdk.json")
-
+<<<<<<< HEAD
 	// Initialize the app with a service account, granting admin privileges
 	app, err := firebase.NewApp(ctx, conf, opt)
 	if err != nil {
@@ -44,101 +38,24 @@ func init() {
 	}
 }
 >>>>>>> 4b950a09f8fbd2fca05f46e8e1f6843a920611bf
+=======
+>>>>>>> 00cd39fc767441d4419619135cf00be50a8ea4f8
 
 func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("views/*")
 
-	router.POST("/api/v1/antrian", AddAntrianHandler)
-	router.GET("/api/v1/antrian/status", GetAntrianHandler)
-	router.PUT("/api/v1/antrian/id/:idAntrian", UpdateAntrianHandler)
-	router.DELETE("/api/v1/antrian/id/:idAntrian/delete", DeleteAntrianHandler)
-	router.GET("/antrian", PageAntrianHandler)
+	router.POST("/api/v1/antrian", controller.AddAntrianHandler)
+	router.GET("/api/v1/antrian/status", controller.GetAntrianHandler)
+	router.PUT("/api/v1/antrian/id/:idAntrian", controller.UpdateAntrianHandler)
+	router.DELETE("/api/v1/antrian/id/:idAntrian/delete", controller.DeleteAntrianHandler)
+	router.GET("/antrian", controller.PageAntrianHandler)
 	router.Run(":8080")
 }
 
-func AddAntrianHandler(c *gin.Context) {
-	flag, err := addAntrian()
-	if flag {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status": "success",
-		})
-	} else {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "failed",
-			"error":  err,
-		})
-	}
-}
 
-func GetAntrianHandler(c *gin.Context) {
-	flag, err, resp := getAntrian()
-	if flag {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status": "success",
-			"data":   resp,
-		})
-	} else {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "failed",
-			"error":  err,
-		})
-	}
-}
 
-func UpdateAntrianHandler(c *gin.Context) {
-	idAntrian := c.Param("idAntrian")
-	flag, err := updateAntrian(idAntrian)
-	if flag {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status": "success",
-		})
-	} else {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "failed",
-			"error":  err,
-		})
-	}
-}
-
-func DeleteAntrianHandler(c *gin.Context) {
-	idAntrian := c.Param("idAntrian")
-	flag, err := deleteAntrian(idAntrian)
-	if flag {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status": "success",
-		})
-	} else {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "failed",
-			"error":  err,
-		})
-	}
-}
-
-func PageAntrianHandler(c *gin.Context) {
-	flag, err, result := getAntrian()
-	var currentAntrian map[string]interface{}
-
-	for _, item := range result {
-		if item != nil {
-			currentAntrian = item
-			break
-		}
-	}
-
-	if flag && len(result) > 0 {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"antrian": currentAntrian["id"],
-		})
-	} else {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "failed",
-			"error":  err,
-		})
-	}
-}
-
+<<<<<<< HEAD
 func addAntrian() (bool, error) {
 	_, _, dataAntrian := getAntrian()
 	var Id string
@@ -238,3 +155,6 @@ type Antrian struct {
 	Id     string `json:"id"`
 	Status bool   `json:"status"`
 }
+=======
+
+>>>>>>> 00cd39fc767441d4419619135cf00be50a8ea4f8
